@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tally – Supporters</title>
+  <meta name="description" content="The people who help keep Tally free and ad-free for everyone.">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:      #0E0E0E;
+      --surface:    #181818;
+      --card:       #202020;
+      --gold:       #F5C842;
+      --gold-dim:   #A8882A;
+      --gold-glow:  rgba(245, 200, 66, 0.12);
+      --text:       #F0EDE6;
+      --muted:      #7A7A7A;
+      --border:     rgba(245, 200, 66, 0.15);
+
+      --m1: #1A1808;   /* mountain back   */
+      --m2: #28240D;   /* mountain mid    */
+      --m3: #3A3312;   /* mountain front  */
+      --m4: #52481A;   /* mountain fore   */
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Poppins', system-ui, sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────────── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .wordmark span {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+
+    .nav-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--gold); }
+
+    /* ── HERO ────────────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 96px 24px 80px;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .hero-body {
+      max-width: 540px;
+      margin: 0 auto;
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .hero-body strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    /* ── MOUNTAINS SVG ───────────────────────────────────────── */
+    .mountains {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+      margin-top: -2px;
+    }
+
+    .mountains-footer {
+      margin-bottom: -2px;
+      transform: scaleX(-1);
+    }
+
+    /* ── SUPPORTERS SECTION ──────────────────────────────────── */
+    .supporters {
+      background: var(--surface);
+      padding: 80px 24px;
+    }
+
+    .supporters-inner {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 48px;
+      text-align: center;
+    }
+
+    /* ── TIER ────────────────────────────────────────────────── */
+    .tier {
+      margin-bottom: 56px;
+    }
+
+    .tier:last-child { margin-bottom: 0; }
+
+    .tier-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .tier-name {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .tier-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .tier-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    /* ── NAMES GRID ──────────────────────────────────────────── */
+    .names-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .name-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 18px;
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--text);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .name-chip.featured {
+      border-color: var(--gold);
+      background: var(--gold-glow);
+      color: var(--gold);
+    }
+
+    /* ── EMPTY STATE ─────────────────────────────────────────── */
+    .empty {
+      display: inline-block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .empty a {
+      color: var(--gold);
+      text-decoration: none;
+      font-style: normal;
+    }
+    .empty a:hover { text-decoration: underline; }
+
+    /* ── CTA SECTION ─────────────────────────────────────────── */
+    .cta-section {
+      background: var(--black);
+      padding: 80px 24px;
+      text-align: center;
+    }
+
+    .cta-inner { max-width: 500px; margin: 0 auto; }
+
+    .cta-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .cta-body {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 36px;
+      line-height: 1.8;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 100px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #111;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── FOOTER ──────────────────────────────────────────────── */
+    footer {
+      background: var(--surface);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      header { padding: 20px 24px; }
+      .hero { padding: 64px 24px 60px; }
+      footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ── TALLY LOGO SVG ──────────────────────────────────────── */
+    .logo-svg { width: 32px; height: 32px; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a class="wordmark" href="https://apps.apple.com/app/id6783171759" target="_blank" rel="noopener">
+      <svg class="logo-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4"  y="8" width="4" height="22" rx="2" fill="#F5C842" opacity="0.45"/>
+        <rect x="12" y="8" width="4" height="22" rx="2" fill="#F5C842" opacity="0.62"/>
+        <rect x="20" y="8" width="4" height="22" rx="2" fill="#F5C842" opacity="0.80"/>
+        <rect x="28" y="8" width="4" height="22" rx="2" fill="#F5C842" opacity="0.45"/>
+        <path d="M4 34 L20 10 L40 22" stroke="#F5C842" stroke-width="3.5"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>tally</span>
+    </a>
+    <a class="nav-link" href="https://apps.apple.com/app/id6783171759" target="_blank" rel="noopener">
+      Download the app →
+    </a>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Supporters</p>
+    <h1 class="hero-title">Thank <em>you.</em></h1>
+    <p class="hero-body">
+      Tally is <strong>free forever</strong> — no accounts, no ads, no subscriptions.
+      These are the people who believed in that mission enough to back it anyway.
+      Every name on this page helped keep Tally free for everyone else.
+    </p>
+  </section>
+
+  <!-- MOUNTAINS TOP -->
+  <svg class="mountains" viewBox="0 0 1440 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <polygon points="0,180 0,130 180,50  360,110 540,30  720,100 900,20  1080,90 1260,40 1440,100 1440,180" fill="var(--m1)"/>
+    <polygon points="0,180 0,145 200,70  380,130 560,55  740,120 920,45  1100,115 1280,65 1440,120 1440,180" fill="var(--m2)"/>
+    <polygon points="0,180 0,158 220,90  400,148 580,75  760,142 940,68  1120,138 1300,88 1440,138 1440,180" fill="var(--m3)"/>
+    <polygon points="0,180 0,168 240,108 420,162 600,95  780,158 960,88  1140,155 1320,108 1440,155 1440,180" fill="var(--m4)"/>
+  </svg>
+
+  <!-- SUPPORTERS -->
+  <section class="supporters">
+    <div class="supporters-inner">
+      <p class="section-label">Hall of supporters</p>
+
+      <!-- EVERGREEN -->
+      <div class="tier">
+        <div class="tier-header">
+          <span class="tier-name">Evergreen</span>
+          <div class="tier-rule"></div>
+        </div>
+        <p class="tier-desc">Lifetime supporters — they're in this forever.</p>
+        <div class="names-grid">
+          <!-- Add names here as: <span class="name-chip featured">Name</span> -->
+          <span class="empty">
+            No one yet. <a href="https://ko-fi.com/tallyapp" target="_blank" rel="noopener">Be the first →</a>
+          </span>
+        </div>
+      </div>
+
+      <!-- CHAMPION -->
+      <div class="tier">
+        <div class="tier-header">
+          <span class="tier-name">Champion</span>
+          <div class="tier-rule"></div>
+        </div>
+        <p class="tier-desc">Monthly supporters going above and beyond.</p>
+        <div class="names-grid">
+          <!-- Add names here as: <span class="name-chip">Name</span> -->
+          <span class="empty">
+            No one yet. <a href="https://ko-fi.com/tallyapp" target="_blank" rel="noopener">Be the first →</a>
+          </span>
+        </div>
+      </div>
+
+      <!-- FRIEND OF TALLY -->
+      <div class="tier">
+        <div class="tier-header">
+          <span class="tier-name">Friend of Tally</span>
+          <div class="tier-rule"></div>
+        </div>
+        <p class="tier-desc">Monthly supporters keeping the lights on.</p>
+        <div class="names-grid">
+          <!-- Add names here as: <span class="name-chip">Name</span> -->
+          <span class="empty">
+            No one yet. <a href="https://ko-fi.com/tallyapp" target="_blank" rel="noopener">Be the first →</a>
+          </span>
+        </div>
+      </div>
+
+      <!-- SUPPORTER -->
+      <div class="tier">
+        <div class="tier-header">
+          <span class="tier-name">Supporter</span>
+          <div class="tier-rule"></div>
+        </div>
+        <p class="tier-desc">One-time supporters who made a difference.</p>
+        <div class="names-grid">
+          <!-- Add names here as: <span class="name-chip">Name</span> -->
+          <span class="empty">
+            No one yet. <a href="https://ko-fi.com/tallyapp" target="_blank" rel="noopener">Be the first →</a>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MOUNTAINS BOTTOM -->
+  <svg class="mountains mountains-footer" viewBox="0 0 1440 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <polygon points="0,180 0,130 180,50  360,110 540,30  720,100 900,20  1080,90 1260,40 1440,100 1440,180" fill="var(--m1)"/>
+    <polygon points="0,180 0,145 200,70  380,130 560,55  740,120 920,45  1100,115 1280,65 1440,120 1440,180" fill="var(--m2)"/>
+    <polygon points="0,180 0,158 220,90  400,148 580,75  760,142 940,68  1120,138 1300,88 1440,138 1440,180" fill="var(--m3)"/>
+    <polygon points="0,180 0,168 240,108 420,162 600,95  780,158 960,88  1140,155 1320,108 1440,155 1440,180" fill="var(--m4)"/>
+  </svg>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2 class="cta-title">Want to be on this page?</h2>
+      <p class="cta-body">
+        Tally will always be free. If it's made your finances a little clearer,
+        consider buying me a coffee. Every bit goes directly toward keeping it
+        free and ad-free for everyone.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-gold" href="https://ko-fi.com/tallyapp" target="_blank" rel="noopener">
+          Support on Ko-fi
+        </a>
+        <a class="btn btn-outline" href="https://buymeacoffee.com/tallyapp" target="_blank" rel="noopener">
+          Buy Me a Coffee
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-left">© 2026 Avery Robb · Tally Budget Planner</p>
+    <nav class="footer-links">
+      <a href="https://discord.gg/JHjHzzj7Rv" target="_blank" rel="noopener">Discord</a>
+      <a href="index.html">Privacy Policy</a>
+      <a href="https://apps.apple.com/app/id6783171759" target="_blank" rel="noopener">App Store</a>
+    </nav>
+  </footer>
+
+</body>
+</html>
